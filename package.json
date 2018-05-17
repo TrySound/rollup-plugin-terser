@@ -1,0 +1,33 @@
+{
+  "name": "rollup-plugin-terser",
+  "version": "0.0.0",
+  "description": "Rollup plugin to minify generated es bundle",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "jest",
+    "prepublish": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrySound/rollup-plugin-terser.git"
+  },
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "terser",
+    "minify"
+  ],
+  "author": "Bogdan Chadkin <trysound@yandex.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "terser": "^3.7.5"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
+    "rollup": "^0.59.1"
+  }
+}
