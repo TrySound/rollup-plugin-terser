@@ -23,6 +23,7 @@
   "author": "Bogdan Chadkin <trysound@yandex.ru>",
   "license": "MIT",
   "dependencies": {
+    "@babel/code-frame": "^7.0.0-beta.47",
     "terser": "^3.7.5"
   },
   "devDependencies": {
