@@ -9,8 +9,7 @@ test("minify", async () => {
     plugins: [terser()]
   });
   const result = await bundle.generate({ format: "cjs" });
-  expect(Object.keys(result)).toHaveLength(2);
-  expect(result.code).toEqual('"use strict";var a=5;a<3&&console.log(4);\n');
+  expect(result.code).toEqual('"use strict";window.a=5,window.a<3&&console.log(4);\n');
   expect(result.map).toBeFalsy();
 });
 
@@ -23,7 +22,6 @@ test("minify via terser options", async () => {
     banner: "/* package name */",
     format: "cjs"
   });
-  expect(Object.keys(result)).toHaveLength(2);
   expect(result.code).toEqual('/* package name */\n"use strict";\n');
   expect(result.map).toBeFalsy();
 });
@@ -34,11 +32,10 @@ test("minify with sourcemaps", async () => {
     plugins: [terser()]
   });
   const result = await bundle.generate({ format: "cjs", sourcemap: true });
-  expect(Object.keys(result)).toHaveLength(2);
   expect(result.map).toBeTruthy();
 });
 
-test.only("throw error on terser fail", async () => {
+test("throw error on terser fail", async () => {
   try {
     const bundle = await rollup({
       input: "test/fixtures/failed.js",

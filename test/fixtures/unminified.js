@@ -1,6 +1,6 @@
 "use strict";
-var a = 5;
+window.a = 5;
 
-if (a < 3) {
+if (window.a < 3) {
   console.log(4);
 }
