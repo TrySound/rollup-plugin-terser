@@ -3,7 +3,7 @@
 [travis-img]: https://travis-ci.org/TrySound/rollup-plugin-terser.svg
 [travis]: https://travis-ci.org/TrySound/rollup-plugin-terser
 
-[Rollup](https://github.com/rollup/rollup) plugin to minify generated es bundle.
+[Rollup](https://github.com/rollup/rollup) plugin to minify generated es bundle. Uses [terser](https://github.com/fabiosantoscode/terser) under the hood.
 
 ## Install
 
