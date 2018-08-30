@@ -7,7 +7,7 @@ function terser(userOptions) {
   return {
     name: "terser",
 
-    transformBundle(code) {
+    renderChunk(code) {
       const worker = new Worker(require.resolve("./transform.js"));
 
       return worker

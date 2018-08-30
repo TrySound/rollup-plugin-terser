@@ -43,7 +43,7 @@ test("throw error on terser fail", async () => {
       input: "test/fixtures/failed.js",
       plugins: [
         {
-          transformBundle: () => ({ code: "var = 1" })
+          renderChunk: () => ({ code: "var = 1" })
         },
         terser()
       ]
