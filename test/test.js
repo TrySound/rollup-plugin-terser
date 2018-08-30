@@ -74,7 +74,10 @@ test("works with code splitting", async () => {
     plugins: [terser()]
   });
   const { output } = await bundle.generate({ format: "esm" });
-  expect(
-    Object.entries(output).map(([key, { modules, ...value }]) => [key, value])
-  ).toMatchSnapshot();
+  const newOutput = {};
+  Object.keys(output).forEach(key => {
+    const { modules, ...value } = output[key];
+    newOutput[key] = value;
+  });
+  expect(newOutput).toMatchSnapshot();
 });

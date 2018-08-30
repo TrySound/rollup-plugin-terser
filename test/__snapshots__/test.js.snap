@@ -1,30 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`works with code splitting 1`] = `
-Array [
-  Array [
-    "chunk-1.js",
-    Object {
-      "code": "var chunk1=\\"chunk-1\\";console.log(chunk1);
+Object {
+  "chunk-1.js": Object {
+    "code": "var chunk1=\\"chunk-1\\";console.log(chunk1);
 ",
-      "exports": Array [],
-      "fileName": "chunk-1.js",
-      "imports": Array [],
-      "isEntry": true,
-      "map": null,
-    },
-  ],
-  Array [
-    "chunk-2.js",
-    Object {
-      "code": "var chunk2=\\"chunk-2\\";console.log(chunk2);
+    "exports": Array [],
+    "fileName": "chunk-1.js",
+    "imports": Array [],
+    "isEntry": true,
+    "map": null,
+  },
+  "chunk-2.js": Object {
+    "code": "var chunk2=\\"chunk-2\\";console.log(chunk2);
 ",
-      "exports": Array [],
-      "fileName": "chunk-2.js",
-      "imports": Array [],
-      "isEntry": true,
-      "map": null,
-    },
-  ],
-]
+    "exports": Array [],
+    "fileName": "chunk-2.js",
+    "imports": Array [],
+    "isEntry": true,
+    "map": null,
+  },
+}
 `;
