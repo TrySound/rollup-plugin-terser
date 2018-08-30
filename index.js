@@ -5,8 +5,10 @@ function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
+
   const options = Object.assign({}, userOptions, {
-    sourceMap: userOptions.sourcemap !== false
+    sourceMap: userOptions.sourcemap !== false,
+    sourcemap: undefined
   });
 
   return {

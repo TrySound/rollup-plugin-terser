@@ -37,6 +37,14 @@ test("minify with sourcemaps", async () => {
   expect(result.map).toBeTruthy();
 });
 
+test("allow to disable source maps", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/sourcemap.js",
+    plugins: [terser({ sourcemap: false })]
+  });
+  await bundle.generate({ format: "cjs" });
+});
+
 test("does not allow to pass sourceMap", async () => {
   try {
     const bundle = await rollup({
