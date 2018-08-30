@@ -4,7 +4,8 @@
   "description": "Rollup plugin to minify generated es bundle",
   "main": "index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "transform.js"
   ],
   "scripts": {
     "test": "jest",
