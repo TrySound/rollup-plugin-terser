@@ -9,7 +9,9 @@ test("minify", async () => {
     plugins: [terser()]
   });
   const result = await bundle.generate({ format: "cjs" });
-  expect(result.code).toEqual('"use strict";window.a=5,window.a<3&&console.log(4);\n');
+  expect(result.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
   expect(result.map).toBeFalsy();
 });
 
@@ -46,9 +48,21 @@ test("throw error on terser fail", async () => {
         terser()
       ]
     });
-    await bundle.generate({ format: "es" });
+    await bundle.generate({ format: "esm" });
     expect(true).toBeFalsy();
   } catch (error) {
     expect(error.toString()).toMatch(/Name expected/);
   }
+});
+
+test("works with code splitting", async () => {
+  const bundle = await rollup({
+    input: ["test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js"],
+    experimentalCodeSplitting: true,
+    plugins: [terser()]
+  });
+  const { output } = await bundle.generate({ format: "esm" });
+  expect(
+    Object.entries(output).map(([key, { modules, ...value }]) => [key, value])
+  ).toMatchSnapshot();
 });
