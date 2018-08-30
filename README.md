@@ -29,7 +29,9 @@ rollup({
 terser(options);
 ```
 
-`options` – default: `{}`, type: `object`. [Terser API options](https://github.com/fabiosantoscode/terser#minify-options)
+`options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options)
+
+`options.sourcemap` - default: `true`, type: `boolean`. The only own option which is used to generate source maps and pass them to rollup.
 
 ## Examples
 

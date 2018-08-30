@@ -1,8 +1,13 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 
-function terser(userOptions) {
-  const options = Object.assign({ sourceMap: true }, userOptions);
+function terser(userOptions = {}) {
+  if (userOptions.sourceMap != null) {
+    throw Error("sourceMap option is removed, use sourcemap instead");
+  }
+   const options = Object.assign({}, userOptions, {
+    sourceMap: userOptions.sourcemap !== false
+  });
 
   return {
     name: "terser",
