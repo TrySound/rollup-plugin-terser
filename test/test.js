@@ -41,7 +41,7 @@ test("does not allow to pass sourceMap", async () => {
   try {
     const bundle = await rollup({
       input: "test/fixtures/sourcemap.js",
-      plugins: [uglify({ sourceMap: false })]
+      plugins: [terser({ sourceMap: false })]
     });
     expect(true).toBeFalsy();
   } catch (error) {
