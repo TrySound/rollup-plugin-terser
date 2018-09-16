@@ -8,7 +8,7 @@
 ## Install
 
 ```sh
-npm i rollup-plugin-terser -D
+yarn add rollup-plugin-terser --dev
 ```
 
 ## Usage
