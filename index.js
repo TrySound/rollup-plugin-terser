@@ -1,16 +1,19 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
+const serialize = require("serialize-javascript");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const minifierOptions = Object.assign({}, userOptions, {
-    sourceMap: userOptions.sourcemap !== false,
-    sourcemap: undefined,
-    numWorkers: undefined
-  });
+  const minifierOptions = serialize(
+    Object.assign({}, userOptions, {
+      sourceMap: userOptions.sourcemap !== false,
+      sourcemap: undefined,
+      numWorkers: undefined
+    })
+  );
 
   return {
     name: "terser",

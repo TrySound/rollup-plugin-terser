@@ -1,6 +1,7 @@
 const { minify } = require("terser");
 
-const transform = (code, options) => {
+const transform = (code, optionsString) => {
+  const options = eval(`(${optionsString})`)
   const result = minify(code, options);
   if (result.error) {
     throw result.error;
