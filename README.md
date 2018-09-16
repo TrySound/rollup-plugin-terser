@@ -31,7 +31,13 @@ terser(options);
 
 `options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options)
 
-`options.sourcemap` - default: `true`, type: `boolean`. The only own option which is used to generate source maps and pass them to rollup.
+`options.sourcemap: boolean`
+
+Generates source maps and passes them to rollup. Defaults to `true`.
+
+`options.numWorkers: number`
+
+Amount of workers to spawn. Defaults to the number of CPUs minus 1.
 
 ## Examples
 

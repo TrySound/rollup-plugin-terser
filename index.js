@@ -6,31 +6,37 @@ function terser(userOptions = {}) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const options = Object.assign({}, userOptions, {
+  const minifierOptions = Object.assign({}, userOptions, {
     sourceMap: userOptions.sourcemap !== false,
-    sourcemap: undefined
+    sourcemap: undefined,
+    numWorkers: undefined
   });
 
   return {
     name: "terser",
 
-    renderChunk(code) {
-      const worker = new Worker(require.resolve("./transform.js"));
+    renderStart() {
+      this.worker = new Worker(require.resolve("./transform.js"), {
+        numWorkers: userOptions.numWorkers
+      });
+    },
 
-      return worker
-        .transform(code, options)
-        .then(result => {
-          worker.end();
-          return result;
-        })
-        .catch(error => {
-          worker.end();
-          const { message, line, col: column } = error;
-          console.error(
-            codeFrameColumns(code, { start: { line, column } }, { message })
-          );
-          throw error;
-        });
+    renderChunk(code) {
+      return this.worker.transform(code, minifierOptions).catch(error => {
+        const { message, line, col: column } = error;
+        console.error(
+          codeFrameColumns(code, { start: { line, column } }, { message })
+        );
+        throw error;
+      });
+    },
+
+    generateBundle() {
+      this.worker.end();
+    },
+
+    renderError() {
+      this.worker.end();
     }
   };
 }
