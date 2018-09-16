@@ -11,6 +11,8 @@
 yarn add rollup-plugin-terser --dev
 ```
 
+*Note: this package requires rollup@0.66 and higher*
+
 ## Usage
 
 ```js
