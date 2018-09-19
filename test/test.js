@@ -37,6 +37,20 @@ test("minify with sourcemaps", async () => {
   expect(result.map).toBeTruthy();
 });
 
+
+test("minify with sourcemap options", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/sourcemap.js",
+    plugins: [terser( {sourcemap: {
+        "filename":"",
+        "root":"http://foo.com/src",
+        "url":"foo.min.js.map"
+      }})]
+  });
+  const result = await bundle.generate({ format: "cjs", sourcemap: true});
+  expect(result.code).toMatch("//# sourceMappingURL=foo.min.js.map");
+});
+
 test("allow to disable source maps", async () => {
   const bundle = await rollup({
     input: "test/fixtures/sourcemap.js",

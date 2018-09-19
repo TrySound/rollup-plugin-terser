@@ -7,9 +7,10 @@ function terser(userOptions = {}) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
+
   const minifierOptions = serialize(
     Object.assign({}, userOptions, {
-      sourceMap: userOptions.sourcemap !== false,
+      sourceMap: (typeof userOptions.sourcemap === 'object'?userOptions.sourcemap:  userOptions.sourcemap!== false),
       sourcemap: undefined,
       numWorkers: undefined
     })
