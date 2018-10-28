@@ -1,18 +1,27 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
-const serialize = require("serialize-javascript");
+const { generate } = require("escodegen");
+const lave = require("lave");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const minifierOptions = serialize(
-    Object.assign({}, userOptions, {
-      sourceMap: userOptions.sourcemap !== false,
-      sourcemap: undefined,
-      numWorkers: undefined
-    })
+  const normalizedOptions = {
+    ...userOptions,
+    ...{ sourceMap: userOptions.sourcemap !== false }
+  };
+
+  for (let key of ["sourcemap", "numWorkers"]) {
+    if (Object.prototype.hasOwnProperty.call(normalizedOptions, key)) {
+      delete normalizedOptions[key];
+    }
+  }
+
+  const minifierOptions = lave(
+    normalizedOptions,
+    { generate, format: "expression" }
   );
 
   return {
