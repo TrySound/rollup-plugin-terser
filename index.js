@@ -24,13 +24,18 @@ function terser(userOptions = {}) {
     { generate, format: "expression" }
   );
 
+  let numOfBundles = 0;
+
   return {
     name: "terser",
 
     renderStart() {
-      this.worker = new Worker(require.resolve("./transform.js"), {
-        numWorkers: userOptions.numWorkers
-      });
+      if (!this.worker) {
+        this.worker = new Worker(require.resolve("./transform.js"), {
+          numWorkers: userOptions.numWorkers
+        });
+      }
+      numOfBundles++;
     },
 
     renderChunk(code) {
@@ -44,11 +49,19 @@ function terser(userOptions = {}) {
     },
 
     generateBundle() {
-      this.worker.end();
+      numOfBundles--;
+      // we only want to end worker on the last bundle
+      if (numOfBundles == 0) {
+        this.worker.end();
+      }
     },
 
     renderError() {
-      this.worker.end();
+      numOfBundles--;
+      // we only want to end worker on the last bundle
+      if (numOfBundles == 0) {
+        this.worker.end();
+      }
     }
   };
 }

@@ -32,6 +32,25 @@ test("minify via terser options", async () => {
   expect(output.map).toBeFalsy();
 });
 
+test("minify multiple outputs", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/unminified.js",
+    plugins: [terser()]
+  });
+
+  const [bundle1, bundle2] = await Promise.all([
+    bundle.generate({ format: "cjs" }),
+    bundle.generate({ format: "es" })
+  ]);
+
+  expect(bundle1.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
+  expect(bundle2.code).toEqual(
+    'window.a=5,window.a<3&&console.log(4);\n'
+  );
+});
+
 test("minify with sourcemaps", async () => {
   const bundle = await rollup({
     input: "test/fixtures/sourcemap.js",
@@ -75,6 +94,27 @@ test("throw error on terser fail", async () => {
       ]
     });
     await bundle.generate({ format: "esm" });
+    expect(true).toBeFalsy();
+  } catch (error) {
+    expect(error.toString()).toMatch(/Name expected/);
+  }
+});
+
+test("throw error on terser fail with multiple outputs", async () => {
+  try {
+    const bundle = await rollup({
+      input: "test/fixtures/failed.js",
+      plugins: [
+        {
+          renderChunk: () => ({ code: "var = 1" })
+        },
+        terser()
+      ]
+    });
+    await Promise.all([
+      bundle.generate({ format: "cjs" }),
+      bundle.generate({ format: "esm" })
+    ]);
     expect(true).toBeFalsy();
   } catch (error) {
     expect(error.toString()).toMatch(/Name expected/);
