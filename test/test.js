@@ -42,13 +42,13 @@ test("minify multiple outputs", async () => {
     bundle.generate({ format: "cjs" }),
     bundle.generate({ format: "es" })
   ]);
+  const [output1] = bundle1.output;
+  const [output2] = bundle2.output;
 
-  expect(bundle1.code).toEqual(
+  expect(output1.code).toEqual(
     '"use strict";window.a=5,window.a<3&&console.log(4);\n'
   );
-  expect(bundle2.code).toEqual(
-    'window.a=5,window.a<3&&console.log(4);\n'
-  );
+  expect(output2.code).toEqual("window.a=5,window.a<3&&console.log(4);\n");
 });
 
 test("minify with sourcemaps", async () => {
@@ -163,7 +163,8 @@ test("allow to method shorthand definitions to worker", async () => {
             return false;
           }
         }
-      })]
+      })
+    ]
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
