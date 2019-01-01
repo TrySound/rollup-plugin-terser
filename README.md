@@ -11,7 +11,7 @@
 yarn add rollup-plugin-terser --dev
 ```
 
-*Note: this package requires rollup@0.66 and higher*
+*Note: this package requires rollup@0.66 and higher (including rollup@1.0.0)*
 
 ## Usage
 
@@ -20,7 +20,7 @@ import { rollup } from "rollup";
 import { terser } from "rollup-plugin-terser";
 
 rollup({
-  entry: "main.js",
+  input: "main.js",
   plugins: [terser()]
 });
 ```
