@@ -28,18 +28,18 @@
     "escodegen": "^1.11.0",
     "jest-worker": "^23.2.0",
     "lave": "^1.1.10",
-    "terser": "^3.8.2"
+    "terser": "^3.14.0"
   },
   "peerDependencies": {
     "rollup": ">=0.66.0 <2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.1",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
-    "prettier": "^1.14.2",
+    "prettier": "^1.15.3",
     "rollup": "^1.0.0"
   }
 }
