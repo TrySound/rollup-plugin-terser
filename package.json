@@ -25,8 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
+    "escodegen": "^1.11.0",
     "jest-worker": "^23.2.0",
-    "serialize-javascript": "^1.5.0",
+    "lave": "^1.1.10",
     "terser": "^3.8.2"
   },
   "peerDependencies": {

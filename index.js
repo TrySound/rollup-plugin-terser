@@ -1,18 +1,27 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
-const serialize = require("serialize-javascript");
+const { generate } = require("escodegen");
+const lave = require("lave");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const minifierOptions = serialize(
-    Object.assign({}, userOptions, {
-      sourceMap: userOptions.sourcemap !== false,
-      sourcemap: undefined,
-      numWorkers: undefined
-    })
+  const normalizedOptions = {
+    ...userOptions,
+    ...{ sourceMap: userOptions.sourcemap !== false }
+  };
+
+  for (let key of ["sourcemap", "numWorkers"]) {
+    if (normalizedOptions.hasOwnProperty(key)) {
+      delete normalizedOptions[key];
+    }
+  }
+
+  const serializedOptions = lave(
+    normalizedOptions,
+    { generate, format: "expression" }
   );
 
   return {
@@ -25,7 +34,7 @@ function terser(userOptions = {}) {
     },
 
     renderChunk(code) {
-      return this.worker.transform(code, minifierOptions).catch(error => {
+      return this.worker.transform(code, serializedOptions).catch(error => {
         const { message, line, col: column } = error;
         console.error(
           codeFrameColumns(code, { start: { line, column } }, { message })
