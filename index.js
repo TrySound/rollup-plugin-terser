@@ -19,7 +19,7 @@ function terser(userOptions = {}) {
     }
   }
 
-  const minifierOptions = lave(
+  const serializedOptions = lave(
     normalizedOptions,
     { generate, format: "expression" }
   );
@@ -34,7 +34,7 @@ function terser(userOptions = {}) {
     },
 
     renderChunk(code) {
-      return this.worker.transform(code, minifierOptions).catch(error => {
+      return this.worker.transform(code, serializedOptions).catch(error => {
         const { message, line, col: column } = error;
         console.error(
           codeFrameColumns(code, { start: { line, column } }, { message })
