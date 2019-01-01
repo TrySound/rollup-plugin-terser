@@ -8,26 +8,10 @@ function terser(userOptions = {}) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const normalizedOptions = {
-    ...userOptions,
-    ...{ sourceMap: userOptions.sourcemap !== false }
-  };
-
-  for (let key of ["sourcemap", "numWorkers"]) {
-    if (normalizedOptions.hasOwnProperty(key)) {
-      delete normalizedOptions[key];
-    }
-  }
-
-  const serializedOptions = lave(normalizedOptions, {
-    generate,
-    format: "expression"
-  });
-
   return {
     name: "terser",
 
-    renderChunk(code) {
+    renderChunk(code, chunk, outputOptions) {
       if (!this.worker) {
         this.worker = new Worker(require.resolve("./transform.js"), {
           numWorkers: userOptions.numWorkers
@@ -36,6 +20,23 @@ function terser(userOptions = {}) {
       }
 
       this.numOfBundles++;
+
+      const normalizedOptions = {
+        ...userOptions,
+        sourceMap: userOptions.sourcemap !== false,
+        module: outputOptions.format === "es" || outputOptions.format === "esm"
+      };
+
+      for (let key of ["sourcemap", "numWorkers"]) {
+        if (normalizedOptions.hasOwnProperty(key)) {
+          delete normalizedOptions[key];
+        }
+      }
+
+      const serializedOptions = lave(normalizedOptions, {
+        generate,
+        format: "expression"
+      });
 
       const result = this.worker
         .transform(code, serializedOptions)
