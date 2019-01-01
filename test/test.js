@@ -10,7 +10,7 @@ test("minify", async () => {
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
-  const output = result.output[0];
+  const [output] = result.output;
   expect(output.code).toEqual(
     '"use strict";window.a=5,window.a<3&&console.log(4);\n'
   );
@@ -27,7 +27,7 @@ test("minify via terser options", async () => {
     format: "cjs"
   });
   expect(result.output).toHaveLength(1);
-  const output = result.output[0];
+  const [output] = result.output;
   expect(output.code).toEqual('/* package name */\n"use strict";\n');
   expect(output.map).toBeFalsy();
 });
@@ -39,7 +39,8 @@ test("minify with sourcemaps", async () => {
   });
   const result = await bundle.generate({ format: "cjs", sourcemap: true });
   expect(result.output).toHaveLength(1);
-  expect(result.output[0].map).toBeTruthy();
+  const [output] = result.output;
+  expect(output.map).toBeTruthy();
 });
 
 test("allow to disable source maps", async () => {
@@ -101,7 +102,8 @@ test("allow to pass not string values to worker", async () => {
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
-  expect(result.output[0].code).toEqual(
+  const [output] = result.output;
+  expect(output.code).toEqual(
     '"use strict";window.a=5,window.a<3&&console.log(4);\n'
   );
 });
