@@ -126,7 +126,9 @@ test("allow to method shorthand definitions to worker", async () => {
       })]
   });
   const result = await bundle.generate({ format: "cjs" });
-  expect(result.code).toEqual(
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
     '"use strict";window.a=5,window.a<3&&console.log(4);\n'
   );
 });
