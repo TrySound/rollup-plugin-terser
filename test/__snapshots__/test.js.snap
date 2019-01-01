@@ -5,20 +5,28 @@ Object {
   "chunk-1.js": Object {
     "code": "var chunk1=\\"chunk-1\\";console.log(chunk1);
 ",
+    "dynamicImports": Array [],
     "exports": Array [],
+    "facadeModuleId": "/Users/evan/source/rollup-plugin-terser/test/fixtures/chunk-1.js",
     "fileName": "chunk-1.js",
     "imports": Array [],
+    "isDynamicEntry": false,
     "isEntry": true,
     "map": null,
+    "name": "chunk-1",
   },
   "chunk-2.js": Object {
     "code": "var chunk2=\\"chunk-2\\";console.log(chunk2);
 ",
+    "dynamicImports": Array [],
     "exports": Array [],
+    "facadeModuleId": "/Users/evan/source/rollup-plugin-terser/test/fixtures/chunk-2.js",
     "fileName": "chunk-2.js",
     "imports": Array [],
+    "isDynamicEntry": false,
     "isEntry": true,
     "map": null,
+    "name": "chunk-2",
   },
 }
 `;
