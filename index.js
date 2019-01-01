@@ -19,36 +19,46 @@ function terser(userOptions = {}) {
     }
   }
 
-  const serializedOptions = lave(
-    normalizedOptions,
-    { generate, format: "expression" }
-  );
+  const serializedOptions = lave(normalizedOptions, {
+    generate,
+    format: "expression"
+  });
 
   return {
     name: "terser",
 
-    renderStart() {
-      this.worker = new Worker(require.resolve("./transform.js"), {
-        numWorkers: userOptions.numWorkers
-      });
-    },
-
     renderChunk(code) {
-      return this.worker.transform(code, serializedOptions).catch(error => {
-        const { message, line, col: column } = error;
-        console.error(
-          codeFrameColumns(code, { start: { line, column } }, { message })
-        );
-        throw error;
-      });
-    },
+      if (!this.worker) {
+        this.worker = new Worker(require.resolve("./transform.js"), {
+          numWorkers: userOptions.numWorkers
+        });
+        this.numOfBundles = 0;
+      }
 
-    generateBundle() {
-      this.worker.end();
-    },
+      this.numOfBundles++;
 
-    renderError() {
-      this.worker.end();
+      const result = this.worker
+        .transform(code, serializedOptions)
+        .catch(error => {
+          const { message, line, col: column } = error;
+          console.error(
+            codeFrameColumns(code, { start: { line, column } }, { message })
+          );
+          throw error;
+        });
+
+      const handler = () => {
+        this.numOfBundles--;
+
+        if (this.numOfBundles === 0) {
+          this.worker.end();
+          this.worker = 0;
+        }
+      };
+
+      result.then(handler, handler);
+
+      return result;
     }
   };
 }
