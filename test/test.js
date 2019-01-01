@@ -88,7 +88,7 @@ test("works with code splitting", async () => {
   const { output } = await bundle.generate({ format: "esm" });
   const newOutput = {};
   output.forEach(out => {
-    const { modules, ...value } = out;
+    const { modules, facadeModuleId, ...value } = out;
     newOutput[out.fileName] = value;
   });
   expect(newOutput).toMatchSnapshot();
