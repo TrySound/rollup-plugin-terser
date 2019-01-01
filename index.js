@@ -14,7 +14,7 @@ function terser(userOptions = {}) {
   };
 
   for (let key of ["sourcemap", "numWorkers"]) {
-    if (Object.prototype.hasOwnProperty.call(normalizedOptions, key)) {
+    if (normalizedOptions.hasOwnProperty(key)) {
       delete normalizedOptions[key];
     }
   }
