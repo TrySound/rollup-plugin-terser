@@ -51,6 +51,17 @@ test("minify multiple outputs", async () => {
   expect(output2.code).toEqual("window.a=5,window.a<3&&console.log(4);\n");
 });
 
+test("minify module", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/plain-file.js",
+    plugins: [terser()]
+  });
+  const result = await bundle.generate({ format: "esm" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual('console.log("bar");\n');
+});
+
 test("minify with sourcemaps", async () => {
   const bundle = await rollup({
     input: "test/fixtures/sourcemap.js",

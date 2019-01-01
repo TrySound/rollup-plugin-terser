@@ -3,7 +3,7 @@
 exports[`works with code splitting 1`] = `
 Object {
   "chunk-1.js": Object {
-    "code": "var chunk1=\\"chunk-1\\";console.log(chunk1);
+    "code": "console.log(\\"chunk-1\\");
 ",
     "dynamicImports": Array [],
     "exports": Array [],
@@ -15,7 +15,7 @@ Object {
     "name": "chunk-1",
   },
   "chunk-2.js": Object {
-    "code": "var chunk2=\\"chunk-2\\";console.log(chunk2);
+    "code": "console.log(\\"chunk-2\\");
 ",
     "dynamicImports": Array [],
     "exports": Array [],
