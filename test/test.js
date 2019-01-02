@@ -140,7 +140,10 @@ test("works with code splitting", async () => {
   const { output } = await bundle.generate({ format: "esm" });
   const newOutput = {};
   output.forEach(out => {
-    const { modules, facadeModuleId, ...value } = out;
+    // TODO rewrite with object rest after node 6 dropping
+    const value = Object.assign({}, out);
+    delete value.modules;
+    delete value.facadeModuleId;
     newOutput[out.fileName] = value;
   });
   expect(newOutput).toMatchSnapshot();
