@@ -21,11 +21,11 @@ function terser(userOptions = {}) {
 
       this.numOfBundles++;
 
-      const normalizedOptions = {
-        ...userOptions,
+      // TODO rewrite with object spread after node6 drop
+      const normalizedOptions = Object.assign({}, userOptions, {
         sourceMap: userOptions.sourcemap !== false,
         module: outputOptions.format === "es" || outputOptions.format === "esm"
-      };
+      });
 
       for (let key of ["sourcemap", "numWorkers"]) {
         if (normalizedOptions.hasOwnProperty(key)) {
