@@ -2697,9 +2697,9 @@ rimraf@^2.6.2:
   dependencies:
     glob "^7.1.3"
 
-rollup@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.0.0.tgz#db97a04a15364d1cd3823a0024ae8d8fda530a1c"
+rollup@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.0.2.tgz#df88abda5cfe96afaa07dbd540510f87e60d1baf"
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
@@ -3031,9 +3031,9 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-terser@^3.14.0:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-3.14.0.tgz#49a8ddf34a1308a901d787dab03a42c51b557447"
+terser@^3.14.1:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-3.14.1.tgz#cc4764014af570bc79c79742358bd46926018a32"
   dependencies:
     commander "~2.17.1"
     source-map "~0.6.1"
