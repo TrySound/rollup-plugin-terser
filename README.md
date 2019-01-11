@@ -27,6 +27,8 @@ rollup({
 
 ## Options
 
+> ⚠️ **Caveat:** any function used in options object cannot rely on its surrounding scope, since it is executed in an isolated context.
+
 ```js
 terser(options);
 ```
