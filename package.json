@@ -32,7 +32,7 @@
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
     "escodegen": "^1.11.0",
-    "jest-worker": "^24.0.0-alpha.9",
+    "jest-worker": "^24.0.0",
     "lave": "^1.1.10",
     "terser": "^3.14.1"
   },
@@ -43,9 +43,9 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-async-to-generator": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "babel-jest": "^24.0.0-alpha.9",
-    "jest": "^24.0.0-alpha.9",
-    "prettier": "^1.15.3",
-    "rollup": "^1.0.2"
+    "babel-jest": "^24.0.0",
+    "jest": "^24.0.0",
+    "prettier": "^1.16.1",
+    "rollup": "^1.1.2"
   }
 }
