@@ -13,7 +13,6 @@
   },
   "babel": {
     "plugins": [
-      "@babel/transform-modules-commonjs",
       "@babel/transform-async-to-generator"
     ]
   },
@@ -42,7 +41,6 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-async-to-generator": "^7.2.0",
-    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "babel-jest": "^24.0.0",
     "jest": "^24.0.0",
     "prettier": "^1.16.1",
