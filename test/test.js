@@ -1,6 +1,4 @@
-const assert = require("assert");
 const { rollup } = require("rollup");
-const readFile = require("fs").readFileSync;
 const { terser } = require("../");
 
 test("minify", async () => {

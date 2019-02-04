@@ -1,7 +1,6 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
-const { generate } = require("escodegen");
-const lave = require("lave");
+const serialize = require("serialize-javascript");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
@@ -33,10 +32,7 @@ function terser(userOptions = {}) {
         }
       }
 
-      const serializedOptions = lave(normalizedOptions, {
-        generate,
-        format: "expression"
-      });
+      const serializedOptions = serialize(normalizedOptions);
 
       const result = this.worker
         .transform(code, serializedOptions)
