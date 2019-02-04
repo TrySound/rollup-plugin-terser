@@ -162,7 +162,33 @@ test("allow to pass not string values to worker", async () => {
   );
 });
 
-test("allow to method shorthand definitions to worker", async () => {
+test("allow classic function definitions passing to worker", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/unminified.js",
+    plugins: [
+      terser({
+        mangle: { properties: { regex: /^_/ } },
+        output: {
+          comments: function (node, comment) {
+            if (comment.type === "comment2") {
+              // multiline comment
+              return /@preserve|@license|@cc_on|^!/i.test(comment.value);
+            }
+            return false;
+          }
+        }
+      })
+    ]
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
+});
+
+test("allow method shorthand definitions passing to worker", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
     plugins: [
@@ -170,6 +196,32 @@ test("allow to method shorthand definitions to worker", async () => {
         mangle: { properties: { regex: /^_/ } },
         output: {
           comments(node, comment) {
+            if (comment.type === "comment2") {
+              // multiline comment
+              return /@preserve|@license|@cc_on|^!/i.test(comment.value);
+            }
+            return false;
+          }
+        }
+      })
+    ]
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
+});
+
+test("allow arrow function definitions passing to worker", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/unminified.js",
+    plugins: [
+      terser({
+        mangle: { properties: { regex: /^_/ } },
+        output: {
+          comments: (node, comment) => {
             if (comment.type === "comment2") {
               // multiline comment
               return /@preserve|@license|@cc_on|^!/i.test(comment.value);
