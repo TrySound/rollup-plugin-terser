@@ -25,6 +25,13 @@ rollup({
 });
 ```
 
+## Why named export?
+
+1. Module is a namespace. Default export often leads to function/component per file dogma and makes code less maintainable.
+2. Interop with commonjs is broken in many cases. A ways to fight them are known. 
+3. Show me any good language with default exports. It's historical javascriptism.
+
+
 ## Options
 
 > ⚠️ **Caveat:** any function used in options object cannot rely on its surrounding scope, since it is executed in an isolated context.
