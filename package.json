@@ -30,19 +30,19 @@
   "license": "MIT",
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
-    "jest-worker": "^24.0.0",
-    "serialize-javascript": "^1.6.1",
-    "terser": "^3.14.1"
+    "jest-worker": "^24.6.0",
+    "serialize-javascript": "^1.7.0",
+    "terser": "^4.0.0"
   },
   "peerDependencies": {
     "rollup": ">=0.66.0 <2"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-async-to-generator": "^7.2.0",
-    "babel-jest": "^24.0.0",
-    "jest": "^24.0.0",
-    "prettier": "^1.16.1",
-    "rollup": "^1.1.2"
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-async-to-generator": "^7.4.4",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.17.1",
+    "rollup": "^1.12.3"
   }
 }
