@@ -46,6 +46,10 @@ terser(options);
 
 Generates source maps and passes them to rollup. Defaults to `true`.
 
+`options.filename: string`
+
+If set, writes the minified output to this file, and leaves the regular output file unminified. Not set by default.
+
 `options.numWorkers: number`
 
 Amount of workers to spawn. Defaults to the number of CPUs minus 1.

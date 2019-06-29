@@ -1,10 +1,20 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
+const fs = require('fs');
+const { promisify } = require('util');
+
+const writeFile = promisify(fs.writeFile);
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
+  }
+  
+  let fileName = '';
+  if (userOptions.filename) {
+    fileName = userOptions.filename;
+    delete userOptions.filename;
   }
 
   return {
@@ -26,7 +36,7 @@ function terser(userOptions = {}) {
         module: outputOptions.format === "es" || outputOptions.format === "esm"
       });
 
-      for (let key of ["sourcemap", "numWorkers"]) {
+      for (let key of [ "sourcemap", "numWorkers"] ) {
         if (normalizedOptions.hasOwnProperty(key)) {
           delete normalizedOptions[key];
         }
@@ -52,10 +62,21 @@ function terser(userOptions = {}) {
           this.worker = 0;
         }
       };
+      
+      const writer = async ret => {
+        if (fileName && outputOptions.file) {
+          await writeFile(fileName, ret.code);
+          if (ret.map && outputOptions.sourcemap) {
+            await writeFile(fileName.concat(".map"), ret.map);
+          }
+          return null;
+        }
+        return ret;
+      }
 
       result.then(handler, handler);
 
-      return result;
+      return result.then(writer);
     }
   };
 }
