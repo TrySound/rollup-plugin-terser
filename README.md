@@ -50,7 +50,38 @@ Generates source maps and passes them to rollup. Defaults to `true`.
 
 Amount of workers to spawn. Defaults to the number of CPUs minus 1.
 
+
+`options.include: Array<string | RegExp> | string | RegExp`
+
+`options.exclude: Array<string | RegExp> | string | RegExp`
+
+Specifically include/exclude chunk files names (minimatch pattern, or array of minimatch patterns), By default all chunk files will be minify.
+
 ## Examples
+
+### include/exclude
+If you'd like that only some of the files will be minify, then you can filter by `include` and `exclude` to do this like so:
+
+```js
+// rollup.config.js
+import { terser } from "rollup-plugin-terser";
+
+export default {
+  input: "some.js",
+  output: [
+    { file: 'some.js' },
+    { file: 'some.min.js' },
+    { file: 'foo.min.js' },
+    { file: 'other.min.js' }
+  ],
+  plugins: [
+    terser({
+      include: /^.+\.min\.js$/, 
+      exclude: [ 'foo.min.js', 'other*' ]
+    })
+  ]
+};
+```
 
 ### Comments
 
