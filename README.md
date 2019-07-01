@@ -67,17 +67,17 @@ If you'd like that only some of the files will be minify, then you can filter by
 import { terser } from "rollup-plugin-terser";
 
 export default {
-  input: "some.js",
+  input: "index.js",
   output: [
-    { file: 'some.js' },
-    { file: 'some.min.js' },
-    { file: 'foo.min.js' },
-    { file: 'other.min.js' }
+    { file: 'lib.js', format: 'cjs' },
+    { file: 'lib.min.js', format: 'cjs' },
+    { file: 'lib.esm.js', format: 'es' },
+    { dir: '.', entryFileNames: 'lib-[format].js', format: 'iife'  }
   ],
   plugins: [
     terser({
-      include: /^.+\.min\.js$/, 
-      exclude: [ 'foo.min.js', 'other*' ]
+      include: [/^.+\.min\.js$/, '*esm*'], 
+      exclude: [ 'some*' ]
     })
   ]
 };

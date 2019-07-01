@@ -13,8 +13,8 @@ function terser(userOptions = {}) {
   return {
     name: "terser",
 
-    renderChunk(code, { fileName }, outputOptions) {
-      if(!filter(fileName)){
+    renderChunk(code, chunk, outputOptions) {
+      if(!filter(chunk.fileName)){
         return null;
       }
 
