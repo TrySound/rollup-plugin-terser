@@ -1,16 +1,23 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
+const { createFilter } = require('rollup-pluginutils');
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
+  const filter = createFilter( userOptions.include, userOptions.exclude, { resolve: false } );
+
   return {
     name: "terser",
 
     renderChunk(code, chunk, outputOptions) {
+      if(!filter(chunk.fileName)){
+        return null;
+      }
+
       if (!this.worker) {
         this.worker = new Worker(require.resolve("./transform.js"), {
           numWorkers: userOptions.numWorkers
@@ -26,7 +33,7 @@ function terser(userOptions = {}) {
         module: outputOptions.format === "es" || outputOptions.format === "esm"
       });
 
-      for (let key of ["sourcemap", "numWorkers"]) {
+      for (let key of ["include", "exclude", "sourcemap", "numWorkers"]) {
         if (normalizedOptions.hasOwnProperty(key)) {
           delete normalizedOptions[key];
         }
