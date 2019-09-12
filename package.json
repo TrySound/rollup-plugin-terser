@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-terser",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "Rollup plugin to minify generated es bundle",
   "main": "index.js",
   "types": "index.d.ts",
