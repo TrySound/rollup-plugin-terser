@@ -1,7 +1,7 @@
 import { Plugin } from 'rollup';
 import { MinifyOptions } from 'terser';
 
-export interface Options extends MinifyOptions {
+export interface Options extends Omit<MinifyOptions, "sourceMap"> {
 
 	/**
 	 * Specifically include/exclude chunk files names (minimatch pattern, or array of minimatch patterns), By default all chunk files will be minify.
