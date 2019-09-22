@@ -40,7 +40,9 @@ rollup({
 terser(options);
 ```
 
-`options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options)
+[Terser API options](https://github.com/fabiosantoscode/terser#minify-options)
+
+`options`
 
 `options.sourcemap: boolean`
 
@@ -59,7 +61,8 @@ Specifically include/exclude chunk files names (minimatch pattern, or array of m
 
 ## Examples
 
-### include/exclude
+### Include/Exclude
+
 If you'd like that only some of the files will be minify, then you can filter by `include` and `exclude` to do this like so:
 
 ```js
@@ -85,7 +88,27 @@ export default {
 
 ### Comments
 
-If you'd like to preserve comments (for licensing for example), then you can specify a function to do this like so:
+Preserve licensing comments:
+
+```js
+terser({
+  output: {
+    comments: 'some'
+  }
+})
+```
+
+Preserve all comments:
+
+```js
+terser({
+  output: {
+    comments: 'all'
+  }
+})
+```
+
+Preserve specific type of comments:
 
 ```js
 terser({
@@ -99,20 +122,12 @@ terser({
       }
     }
   }
-});
+})
 ```
 
-Alternatively, you can also choose to keep all comments (e.g. if a licensing header has already been prepended by a previous rollup plugin):
+See [Terser API output options]( https://terser.org/docs/api-reference#output-options) documentation for further reference.
 
-```js
-terser({
-  output: {
-    comments: "all"
-  }
-});
-```
-
-See [Terser documentation](https://github.com/fabiosantoscode/terser#terser) for further reference.
+If you'd like to place your comments at top of the bundle use Rollup [`output.banner`](https://rollupjs.org/guide/en/#outputbanneroutputfooter) option.
 
 # License
 
