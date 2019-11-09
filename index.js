@@ -67,7 +67,7 @@ function terser(userOptions = {}) {
           Object.assign(userOptions.nameCache, result.nameCache)
         }
 
-        return result.code
+        return result.result
       });
     }
   };
