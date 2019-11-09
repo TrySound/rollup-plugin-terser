@@ -62,7 +62,13 @@ function terser(userOptions = {}) {
 
       result.then(handler, handler);
 
-      return result;
+      return result.then(result => {
+        if (result.nameCache) {
+          Object.assign(userOptions.nameCache, result.nameCache)
+        }
+
+        return result.code
+      });
     }
   };
 }
