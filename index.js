@@ -1,6 +1,7 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
+const merge = require('lodash.merge');
 const { createFilter } = require('rollup-pluginutils');
 
 function terser(userOptions = {}) {
@@ -64,7 +65,7 @@ function terser(userOptions = {}) {
 
       return result.then(result => {
         if (result.nameCache) {
-          Object.assign(userOptions.nameCache, result.nameCache)
+          merge(userOptions.nameCache, result.nameCache)
         }
 
         return result.result
