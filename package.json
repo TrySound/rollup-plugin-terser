@@ -31,21 +31,21 @@
   "author": "Bogdan Chadkin <trysound@yandex.ru>",
   "license": "MIT",
   "dependencies": {
-    "@babel/code-frame": "^7.0.0",
-    "jest-worker": "^24.6.0",
-    "rollup-pluginutils": "^2.8.1",
-    "serialize-javascript": "^1.7.0",
-    "terser": "^4.1.0"
+    "@babel/code-frame": "^7.5.5",
+    "jest-worker": "^24.9.0",
+    "rollup-pluginutils": "^2.8.2",
+    "serialize-javascript": "^2.1.1",
+    "terser": "^4.4.2"
   },
   "peerDependencies": {
     "rollup": ">=0.66.0 <2"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/plugin-transform-async-to-generator": "^7.5.0",
-    "babel-jest": "^24.8.0",
-    "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "rollup": "^1.16.6"
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-transform-async-to-generator": "^7.7.4",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "rollup": "^1.27.8"
   }
 }

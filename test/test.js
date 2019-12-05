@@ -142,6 +142,7 @@ test("works with code splitting", async () => {
     const value = Object.assign({}, out);
     delete value.modules;
     delete value.facadeModuleId;
+    delete value.type;
     newOutput[out.fileName] = value;
   });
   expect(newOutput).toMatchSnapshot();
