@@ -28,10 +28,10 @@ function terser(userOptions = {}) {
       this.numOfBundles++;
 
       // TODO rewrite with object spread after node6 drop
-      const normalizedOptions = Object.assign({}, userOptions, {
+      const normalizedOptions = Object.assign({
         sourceMap: userOptions.sourcemap !== false,
         module: outputOptions.format === "es" || outputOptions.format === "esm"
-      });
+      }, userOptions);
 
       for (let key of ["include", "exclude", "sourcemap", "numWorkers"]) {
         if (normalizedOptions.hasOwnProperty(key)) {
