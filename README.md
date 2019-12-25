@@ -40,7 +40,9 @@ rollup({
 terser(options);
 ```
 
-`options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options)
+`options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options). Note that some terser options are set by the plugin automatically:
+
+* `options.module` - will be set to `true` when `outputOptions.format` is `esm` or `es`.
 
 `options.sourcemap: boolean`
 
