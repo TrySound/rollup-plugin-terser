@@ -91,6 +91,17 @@ test("does not allow to pass sourceMap", async () => {
   }
 });
 
+test("allow to override module flag", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/module.js",
+    plugins: [terser({ module: false })]
+  });
+  const result = await bundle.generate({ format: "esm" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual('var a=b();\n');
+});
+
 test("throw error on terser fail", async () => {
   try {
     const bundle = await rollup({
