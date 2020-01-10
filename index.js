@@ -1,7 +1,6 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
-const merge = require('lodash.merge');
 const { createFilter } = require('rollup-pluginutils');
 
 function terser(userOptions = {}) {
@@ -65,7 +64,28 @@ function terser(userOptions = {}) {
 
       return result.then(result => {
         if (result.nameCache) {
-          merge(userOptions.nameCache, result.nameCache)
+          let { vars, props } = userOptions.nameCache;
+
+          // only assign nameCache.vars if it was provided, and if terser produced values:
+          if (vars) {
+            const newVars = result.nameCache.vars && result.nameCache.vars.props;
+            if (newVars) {
+              vars.props = vars.props || {};
+              Object.assign(vars.props, newVars);
+            }
+          }
+
+          // support populating an empty nameCache object:
+          if (!props) {
+            props = userOptions.nameCache.props = {};
+          }
+
+          // merge updated props into original nameCache object:
+          const newProps = result.nameCache.props && result.nameCache.props.props;
+          if (newProps) {
+            props.props = props.props || {};
+            Object.assign(props.props, newProps);
+          }
         }
 
         return result.result
