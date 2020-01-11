@@ -55,6 +55,11 @@ Amount of workers to spawn. Defaults to the number of CPUs minus 1.
 
 `options.exclude: Array<string | RegExp> | string | RegExp`
 
+Note: some terser options are set by the plugin automatically:
+
+* `module: true` is set when `format` is `esm` or `es`
+* `toplevel: true` is set when `format` is `cjs`
+
 Specifically include/exclude chunk files names (minimatch pattern, or array of minimatch patterns), By default all chunk files will be minify.
 
 ## Examples
