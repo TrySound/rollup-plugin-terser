@@ -11,7 +11,7 @@
 yarn add rollup-plugin-terser --dev
 ```
 
-*Note: this package requires rollup@0.66 and higher (including rollup@1.0.0)*
+_Note: this package requires rollup@0.66 and higher (including rollup@1.0.0)_
 
 ## Usage
 
@@ -31,7 +31,6 @@ rollup({
 2. Interop with commonjs is broken in many cases or hard to maintain.
 3. Show me any good language with default exports. It's historical javascriptism.
 
-
 ## Options
 
 > ⚠️ **Caveat:** any function used in options object cannot rely on its surrounding scope, since it is executed in an isolated context.
@@ -42,6 +41,11 @@ terser(options);
 
 `options` - [terser API options](https://github.com/fabiosantoscode/terser#minify-options)
 
+Note: some terser options are set by the plugin automatically:
+
+- `module: true` is set when `format` is `esm` or `es`
+- `toplevel: true` is set when `format` is `cjs`
+
 `options.sourcemap: boolean`
 
 Generates source maps and passes them to rollup. Defaults to `true`.
@@ -50,21 +54,32 @@ Generates source maps and passes them to rollup. Defaults to `true`.
 
 Amount of workers to spawn. Defaults to the number of CPUs minus 1.
 
-
 `options.include: Array<string | RegExp> | string | RegExp`
 
 `options.exclude: Array<string | RegExp> | string | RegExp`
-
-Note: some terser options are set by the plugin automatically:
-
-* `module: true` is set when `format` is `esm` or `es`
-* `toplevel: true` is set when `format` is `cjs`
 
 Specifically include/exclude chunk files names (minimatch pattern, or array of minimatch patterns), By default all chunk files will be minify.
 
 ## Examples
 
+### Using as output plugin
+
+```js
+// rollup.config.js
+import { terser } from "rollup-plugin-terser";
+
+export default {
+  input: "index.js",
+  output: [
+    { file: "lib.js", format: "cjs" },
+    { file: "lib.min.js", format: "cjs", plugins: [terser()] },
+    { file: "lib.esm.js", format: "esm" }
+  ]
+};
+```
+
 ### include/exclude
+
 If you'd like that only some of the files will be minify, then you can filter by `include` and `exclude` to do this like so:
 
 ```js
@@ -74,15 +89,15 @@ import { terser } from "rollup-plugin-terser";
 export default {
   input: "index.js",
   output: [
-    { file: 'lib.js', format: 'cjs' },
-    { file: 'lib.min.js', format: 'cjs' },
-    { file: 'lib.esm.js', format: 'es' },
-    { dir: '.', entryFileNames: 'lib-[format].js', format: 'iife'  }
+    { file: "lib.js", format: "cjs" },
+    { file: "lib.min.js", format: "cjs" },
+    { file: "lib.esm.js", format: "esm" },
+    { dir: ".", entryFileNames: "lib-[format].js", format: "iife" }
   ],
   plugins: [
     terser({
-      include: [/^.+\.min\.js$/, '*esm*'], 
-      exclude: [ 'some*' ]
+      include: [/^.+\.min\.js$/, "*esm*"],
+      exclude: ["some*"]
     })
   ]
 };
