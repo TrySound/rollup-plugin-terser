@@ -6,7 +6,7 @@ const transform = (code, optionsString) => {
   if (result.error) {
     throw result.error;
   } else {
-    return result;
+    return { result, nameCache: options.nameCache };
   }
 };
 
