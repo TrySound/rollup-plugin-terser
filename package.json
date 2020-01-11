@@ -45,7 +45,7 @@
     "@babel/plugin-transform-async-to-generator": "^7.5.0",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "rollup": "^1.27.10"
   }
 }

@@ -49,7 +49,7 @@ test("minify multiple outputs", async () => {
   expect(output2.code).toEqual("window.a=5,window.a<3&&console.log(4);\n");
 });
 
-test("minify module", async () => {
+test("minify esm module", async () => {
   const bundle = await rollup({
     input: "test/fixtures/plain-file.js",
     plugins: [terser()]
@@ -58,6 +58,41 @@ test("minify module", async () => {
   expect(result.output).toHaveLength(1);
   const [output] = result.output;
   expect(output.code).toEqual('console.log("bar");\n');
+});
+
+test("minify esm module with disabled module option", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/plain-file.js",
+    plugins: [terser({ module: false })]
+  });
+  const result = await bundle.generate({ format: "esm" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual('const foo="bar";console.log(foo);\n');
+});
+
+test("minify cjs module", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/plain-file.js",
+    plugins: [terser()]
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual('"use strict";console.log("bar");\n');
+});
+
+test("minify cjs module with disabled toplevel option", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/plain-file.js",
+    plugins: [terser({ toplevel: false })]
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
+    '"use strict";const foo="bar";console.log(foo);\n'
+  );
 });
 
 test("minify with sourcemaps", async () => {
@@ -167,7 +202,7 @@ test("allow classic function definitions passing to worker", async () => {
       terser({
         mangle: { properties: { regex: /^_/ } },
         output: {
-          comments: function (node, comment) {
+          comments: function(node, comment) {
             if (comment.type === "comment2") {
               // multiline comment
               return /@preserve|@license|@cc_on|^!/i.test(comment.value);
@@ -252,10 +287,10 @@ test("allow to pass not string values to worker", async () => {
 test("include chunk file by string name", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [ terser({ include: 'some.js' }) ]
+    plugins: [terser({ include: "some.js" })]
   });
 
-  const result = await bundle.generate({ format: "es", file: 'some.js' });
+  const result = await bundle.generate({ format: "es", file: "some.js" });
   const { code, map } = result.output[0];
   expect(code).toBe(`window.a=5,window.a<3&&console.log(4);\n`);
   expect(map).toBeFalsy();
@@ -264,19 +299,24 @@ test("include chunk file by string name", async () => {
 test("exclude chunk file pattern name by minimatch pattern", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [ terser({ exclude: '*-cjs.js' }) ]
+    plugins: [terser({ exclude: "*-cjs.js" })]
   });
-  const result = await bundle.generate({ format: "cjs", entryFileNames: '[name]-[format].js' });
+  const result = await bundle.generate({
+    format: "cjs",
+    entryFileNames: "[name]-[format].js"
+  });
   const { code, map } = result.output[0];
 
-  expect(code).toBe(`'use strict';\n\nwindow.a = 5;\n\nif (window.a < 3) {\n  console.log(4);\n}\n`);
+  expect(code).toBe(
+    `'use strict';\n\nwindow.a = 5;\n\nif (window.a < 3) {\n  console.log(4);\n}\n`
+  );
   expect(map).toBeFalsy();
 });
 
 test("include only one chunk file by regex", async () => {
   const bundle = await rollup({
-    input: [ "test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js" ],
-    plugins: [ terser({ include: /.+-1\.\w+/ }) ]
+    input: ["test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js"],
+    plugins: [terser({ include: /.+-1\.\w+/ })]
   });
   const result = await bundle.generate({ format: "es" });
   const { 0: chunk1, 1: chunk2 } = result.output;
@@ -291,44 +331,50 @@ test("terser accepts the nameCache option", async () => {
   const nameCache = {
     props: {
       props: {
-        $_priv: 'custom'
+        $_priv: "custom"
       }
     }
   };
   const bundle = await rollup({
     input: "test/fixtures/properties.js",
-    plugins: [terser({
-      mangle: {
-        properties: {
-          regex: /^_/
-        }
-      },
-      nameCache
-    })]
+    plugins: [
+      terser({
+        mangle: {
+          properties: {
+            regex: /^_/
+          }
+        },
+        nameCache
+      })
+    ]
   });
   const result = await bundle.generate({ format: "es" });
-  expect(result.output[0].code.trim()).toEqual(`console.log({foo:1,custom:2});`);
+  expect(result.output[0].code.trim()).toEqual(
+    `console.log({foo:1,custom:2});`
+  );
 });
 
 test("terser updates the nameCache object", async () => {
   const nameCache = {
     props: {
       props: {
-        $_priv: 'f'
+        $_priv: "f"
       }
     }
   };
   const props = nameCache.props;
   const bundle = await rollup({
     input: "test/fixtures/properties.js",
-    plugins: [terser({
-      mangle: {
-        properties: {
-          regex: /./
-        }
-      },
-      nameCache
-    })]
+    plugins: [
+      terser({
+        mangle: {
+          properties: {
+            regex: /./
+          }
+        },
+        nameCache
+      })
+    ]
   });
   const result = await bundle.generate({ format: "es" });
   expect(result.output[0].code.trim()).toEqual(`console.log({o:1,f:2});`);
@@ -336,8 +382,8 @@ test("terser updates the nameCache object", async () => {
   expect(nameCache).toEqual({
     props: {
       props: {
-        $_priv: 'f',
-        $foo: 'o'
+        $_priv: "f",
+        $foo: "o"
       }
     }
   });
@@ -347,22 +393,26 @@ test("omits populates an empty nameCache object", async () => {
   const nameCache = {};
   const bundle = await rollup({
     input: "test/fixtures/properties-and-locals.js",
-    plugins: [terser({
-      mangle: {
-        properties: {
-          regex: /./
-        }
-      },
-      nameCache
-    })]
+    plugins: [
+      terser({
+        mangle: {
+          properties: {
+            regex: /./
+          }
+        },
+        nameCache
+      })
+    ]
   });
   const result = await bundle.generate({ format: "es" });
-  expect(result.output[0].code.trim()).toEqual(`console.log({o:1,i:2},function o(n){return n>0?o(n-1):n}(10));`);
+  expect(result.output[0].code.trim()).toEqual(
+    `console.log({o:1,i:2},function o(n){return n>0?o(n-1):n}(10));`
+  );
   expect(nameCache).toEqual({
     props: {
       props: {
-        $_priv: 'i',
-        $foo: 'o'
+        $_priv: "i",
+        $foo: "o"
       }
     }
   });
@@ -378,22 +428,26 @@ test("terser preserve vars in nameCache when provided", async () => {
   };
   const bundle = await rollup({
     input: "test/fixtures/properties-and-locals.js",
-    plugins: [terser({
-      mangle: {
-        properties: {
-          regex: /./
-        }
-      },
-      nameCache
-    })]
+    plugins: [
+      terser({
+        mangle: {
+          properties: {
+            regex: /./
+          }
+        },
+        nameCache
+      })
+    ]
   });
   const result = await bundle.generate({ format: "es" });
-  expect(result.output[0].code.trim()).toEqual(`console.log({o:1,i:2},function o(n){return n>0?o(n-1):n}(10));`);
+  expect(result.output[0].code.trim()).toEqual(
+    `console.log({o:1,i:2},function o(n){return n>0?o(n-1):n}(10));`
+  );
   expect(nameCache).toEqual({
     props: {
       props: {
-        $_priv: 'i',
-        $foo: 'o'
+        $_priv: "i",
+        $foo: "o"
       }
     },
     vars: {
@@ -401,4 +455,3 @@ test("terser preserve vars in nameCache when provided", async () => {
     }
   });
 });
-

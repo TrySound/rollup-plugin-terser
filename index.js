@@ -1,20 +1,22 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
-const { createFilter } = require('rollup-pluginutils');
+const { createFilter } = require("rollup-pluginutils");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
     throw Error("sourceMap option is removed, use sourcemap instead");
   }
 
-  const filter = createFilter( userOptions.include, userOptions.exclude, { resolve: false } );
+  const filter = createFilter(userOptions.include, userOptions.exclude, {
+    resolve: false
+  });
 
   return {
     name: "terser",
 
     renderChunk(code, chunk, outputOptions) {
-      if(!filter(chunk.fileName)){
+      if (!filter(chunk.fileName)) {
         return null;
       }
 
@@ -27,12 +29,20 @@ function terser(userOptions = {}) {
 
       this.numOfBundles++;
 
-      // TODO rewrite with object spread after node6 drop
-      const normalizedOptions = Object.assign({}, userOptions, {
-        sourceMap: userOptions.sourcemap !== false,
-        module: outputOptions.format === "es" || outputOptions.format === "esm"
-      });
+      const defaultOptions = {
+        sourceMap: userOptions.sourcemap !== false
+      };
+      if (outputOptions.format === "es" || outputOptions.format === "esm") {
+        defaultOptions.module = true;
+      }
+      if (outputOptions.format === "cjs") {
+        defaultOptions.toplevel = true;
+      }
 
+      // TODO rewrite with object spread after dropping node v6
+      const normalizedOptions = Object.assign({}, defaultOptions, userOptions);
+
+      // remove plugin specific options
       for (let key of ["include", "exclude", "sourcemap", "numWorkers"]) {
         if (normalizedOptions.hasOwnProperty(key)) {
           delete normalizedOptions[key];
@@ -68,7 +78,8 @@ function terser(userOptions = {}) {
 
           // only assign nameCache.vars if it was provided, and if terser produced values:
           if (vars) {
-            const newVars = result.nameCache.vars && result.nameCache.vars.props;
+            const newVars =
+              result.nameCache.vars && result.nameCache.vars.props;
             if (newVars) {
               vars.props = vars.props || {};
               Object.assign(vars.props, newVars);
@@ -81,14 +92,15 @@ function terser(userOptions = {}) {
           }
 
           // merge updated props into original nameCache object:
-          const newProps = result.nameCache.props && result.nameCache.props.props;
+          const newProps =
+            result.nameCache.props && result.nameCache.props.props;
           if (newProps) {
             props.props = props.props || {};
             Object.assign(props.props, newProps);
           }
         }
 
-        return result.result
+        return result.result;
       });
     }
   };
