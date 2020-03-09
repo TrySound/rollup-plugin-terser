@@ -38,7 +38,7 @@
     "terser": "^4.6.2"
   },
   "peerDependencies": {
-    "rollup": ">=0.66.0 <2"
+    "rollup": ">=0.66.0 <3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
