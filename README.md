@@ -9,6 +9,8 @@
 
 ```sh
 yarn add rollup-plugin-terser --dev
+# Or with npm:
+npm i rollup-plugin-terser --save-dev
 ```
 
 _Note: this package requires rollup@0.66 and higher (including rollup@2.0.0)_
