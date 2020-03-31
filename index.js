@@ -21,10 +21,21 @@ function terser(userOptions = {}) {
       }
 
       if (!this.worker) {
-        this.worker = new Worker(require.resolve("./transform.js"), {
-          numWorkers: userOptions.numWorkers
-        });
-        this.numOfBundles = 0;
+        if (userOptions.nameCache || userOptions.numWorkers === 0) {
+          // Transform syncronously
+          this.worker = {
+            transform: function() {
+              const transformer = require("./transform.js");
+              return Promise.resolve(transformer.transform.apply(null, arguments));
+            },
+            end: function() {} // noop
+          };
+        } else {
+          this.worker = new Worker(require.resolve("./transform.js"), {
+            numWorkers: userOptions.numWorkers
+          });
+          this.numOfBundles = 0;
+        }
       }
 
       this.numOfBundles++;
@@ -49,7 +60,9 @@ function terser(userOptions = {}) {
         }
       }
 
-      const serializedOptions = serialize(normalizedOptions);
+      const serializedOptions = (userOptions.nameCache || userOptions.numWorkers === 0) 
+        ? normalizedOptions
+        : serialize(normalizedOptions);
 
       const result = this.worker
         .transform(code, serializedOptions)
