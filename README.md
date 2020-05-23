@@ -23,7 +23,7 @@ import { terser } from "rollup-plugin-terser";
 
 rollup({
   input: "main.js",
-  plugins: [terser()]
+  plugins: [terser()],
 });
 ```
 
@@ -56,12 +56,6 @@ Generates source maps and passes them to rollup. Defaults to `true`.
 
 Amount of workers to spawn. Defaults to the number of CPUs minus 1.
 
-`options.include: Array<string | RegExp> | string | RegExp`
-
-`options.exclude: Array<string | RegExp> | string | RegExp`
-
-Specifically include/exclude chunk files names (minimatch pattern, or array of minimatch patterns), By default all chunk files will be minify.
-
 ## Examples
 
 ### Using as output plugin
@@ -75,33 +69,8 @@ export default {
   output: [
     { file: "lib.js", format: "cjs" },
     { file: "lib.min.js", format: "cjs", plugins: [terser()] },
-    { file: "lib.esm.js", format: "esm" }
-  ]
-};
-```
-
-### include/exclude
-
-If you'd like that only some of the files will be minify, then you can filter by `include` and `exclude` to do this like so:
-
-```js
-// rollup.config.js
-import { terser } from "rollup-plugin-terser";
-
-export default {
-  input: "index.js",
-  output: [
-    { file: "lib.js", format: "cjs" },
-    { file: "lib.min.js", format: "cjs" },
     { file: "lib.esm.js", format: "esm" },
-    { dir: ".", entryFileNames: "lib-[format].js", format: "iife" }
   ],
-  plugins: [
-    terser({
-      include: [/^.+\.min\.js$/, "*esm*"],
-      exclude: ["some*"]
-    })
-  ]
 };
 ```
 
@@ -112,15 +81,15 @@ If you'd like to preserve comments (for licensing for example), then you can spe
 ```js
 terser({
   output: {
-    comments: function(node, comment) {
+    comments: function (node, comment) {
       var text = comment.value;
       var type = comment.type;
       if (type == "comment2") {
         // multiline comment
         return /@preserve|@license|@cc_on/i.test(text);
       }
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -129,8 +98,8 @@ Alternatively, you can also choose to keep all comments (e.g. if a licensing hea
 ```js
 terser({
   output: {
-    comments: "all"
-  }
+    comments: "all",
+  },
 });
 ```
 

@@ -284,49 +284,6 @@ test("allow to pass not string values to worker", async () => {
   );
 });
 
-test("include chunk file by string name", async () => {
-  const bundle = await rollup({
-    input: "test/fixtures/unminified.js",
-    plugins: [terser({ include: "some.js" })],
-  });
-
-  const result = await bundle.generate({ format: "es", file: "some.js" });
-  const { code, map } = result.output[0];
-  expect(code).toBe(`window.a=5,window.a<3&&console.log(4);\n`);
-  expect(map).toBeFalsy();
-});
-
-test("exclude chunk file pattern name by minimatch pattern", async () => {
-  const bundle = await rollup({
-    input: "test/fixtures/unminified.js",
-    plugins: [terser({ exclude: "*-cjs.js" })],
-  });
-  const result = await bundle.generate({
-    format: "cjs",
-    entryFileNames: "[name]-[format].js",
-  });
-  const { code, map } = result.output[0];
-
-  expect(code).toBe(
-    `'use strict';\n\nwindow.a = 5;\n\nif (window.a < 3) {\n  console.log(4);\n}\n`
-  );
-  expect(map).toBeFalsy();
-});
-
-test("include only one chunk file by regex", async () => {
-  const bundle = await rollup({
-    input: ["test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js"],
-    plugins: [terser({ include: /.+-1\.\w+/ })],
-  });
-  const result = await bundle.generate({ format: "es" });
-  const { 0: chunk1, 1: chunk2 } = result.output;
-
-  expect(chunk1.code).toBe(`console.log("chunk-1");\n`);
-  expect(chunk1.map).toBeFalsy();
-  expect(chunk2.code).toBe(`var chunk2 = 'chunk-2';\nconsole.log(chunk2);\n`);
-  expect(chunk2.map).toBeFalsy();
-});
-
 test("terser accepts the nameCache option", async () => {
   const nameCache = {
     props: {

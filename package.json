@@ -27,7 +27,6 @@
   "license": "MIT",
   "dependencies": {
     "@babel/code-frame": "^7.8.3",
-    "@rollup/pluginutils": "^3.0.10",
     "jest-worker": "^26.0.0",
     "serialize-javascript": "^3.0.0",
     "terser": "^4.7.0"
