@@ -1,7 +1,7 @@
 const { codeFrameColumns } = require("@babel/code-frame");
 const Worker = require("jest-worker").default;
 const serialize = require("serialize-javascript");
-const { createFilter } = require("rollup-pluginutils");
+const { createFilter } = require("@rollup/pluginutils");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
