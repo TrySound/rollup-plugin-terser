@@ -223,7 +223,7 @@ test("allow to pass not string values to worker", async () => {
 
 test("allow classic function definitions passing to worker", async () => {
   const bundle = await rollup({
-    input: "test/fixtures/unminified.js",
+    input: "test/fixtures/commented.js",
     plugins: [
       terser({
         mangle: { properties: { regex: /^_/ } },
@@ -239,17 +239,17 @@ test("allow classic function definitions passing to worker", async () => {
       }),
     ],
   });
-  const result = await bundle.generate({ format: "cjs" });
+  const result = await bundle.generate({ format: "cjs", compact: true });
   expect(result.output).toHaveLength(1);
   const [output] = result.output;
   expect(output.code).toEqual(
-    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+    '"use strict";window.a=5,\n/* @preserve this comment */\nwindow.a<3&&console.log(4);'
   );
 });
 
 test("allow method shorthand definitions passing to worker", async () => {
   const bundle = await rollup({
-    input: "test/fixtures/unminified.js",
+    input: "test/fixtures/commented.js",
     plugins: [
       terser({
         mangle: { properties: { regex: /^_/ } },
@@ -265,11 +265,11 @@ test("allow method shorthand definitions passing to worker", async () => {
       }),
     ],
   });
-  const result = await bundle.generate({ format: "cjs" });
+  const result = await bundle.generate({ format: "cjs", compact: true });
   expect(result.output).toHaveLength(1);
   const [output] = result.output;
   expect(output.code).toEqual(
-    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+    '"use strict";window.a=5,\n/* @preserve this comment */\nwindow.a<3&&console.log(4);'
   );
 });
 
