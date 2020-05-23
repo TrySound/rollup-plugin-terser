@@ -103,18 +103,44 @@ test("minify with sourcemaps", async () => {
   const result = await bundle.generate({ format: "cjs", sourcemap: true });
   expect(result.output).toHaveLength(1);
   const [output] = result.output;
-  expect(output.map).toBeTruthy();
+  expect(output.map).toMatchInlineSnapshot(`
+    SourceMap {
+      "file": "sourcemap.js",
+      "mappings": "aAEAA,QAAQC,ICFO",
+      "names": Array [
+        "console",
+        "log",
+      ],
+      "sources": Array [
+        "test/fixtures/sourcemap.js",
+        "test/fixtures/export-number.js",
+      ],
+      "sourcesContent": Array [
+        "import result from './export-number.js';
+
+    console.log(result);
+    ",
+        "export default 5;
+    ",
+      ],
+      "version": 3,
+    }
+  `);
 });
 
-test("allow to disable source maps", async () => {
-  const bundle = await rollup({
-    input: "test/fixtures/sourcemap.js",
-    plugins: [terser({ sourcemap: false })],
-  });
-  await bundle.generate({ format: "cjs" });
+test("does not allow to pass sourcemap option", async () => {
+  try {
+    const bundle = await rollup({
+      input: "test/fixtures/sourcemap.js",
+      plugins: [terser({ sourcemap: false })],
+    });
+    expect(true).toBeFalsy();
+  } catch (error) {
+    expect(error.toString()).toMatch(/sourcemap option is removed/);
+  }
 });
 
-test("does not allow to pass sourceMap", async () => {
+test("does not allow to pass sourceMap option", async () => {
   try {
     const bundle = await rollup({
       input: "test/fixtures/sourcemap.js",

@@ -48,10 +48,6 @@ Note: some terser options are set by the plugin automatically:
 - `module: true` is set when `format` is `esm` or `es`
 - `toplevel: true` is set when `format` is `cjs`
 
-`options.sourcemap: boolean`
-
-Generates source maps and passes them to rollup. Defaults to `true`.
-
 `options.numWorkers: number`
 
 Amount of workers to spawn. Defaults to the number of CPUs minus 1.

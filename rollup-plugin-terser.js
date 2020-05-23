@@ -4,7 +4,14 @@ const serialize = require("serialize-javascript");
 
 function terser(userOptions = {}) {
   if (userOptions.sourceMap != null) {
-    throw Error("sourceMap option is removed, use sourcemap instead");
+    throw Error(
+      "sourceMap option is removed. Now it is inferred from rollup options."
+    );
+  }
+  if (userOptions.sourcemap != null) {
+    throw Error(
+      "sourcemap option is removed. Now it is inferred from rollup options."
+    );
   }
 
   return {
@@ -21,7 +28,7 @@ function terser(userOptions = {}) {
       this.numOfBundles++;
 
       const defaultOptions = {
-        sourceMap: userOptions.sourcemap !== false,
+        sourceMap: outputOptions.sourcemap,
       };
       if (outputOptions.format === "es" || outputOptions.format === "esm") {
         defaultOptions.module = true;
@@ -30,11 +37,10 @@ function terser(userOptions = {}) {
         defaultOptions.toplevel = true;
       }
 
-      // TODO rewrite with object spread after dropping node v6
-      const normalizedOptions = Object.assign({}, defaultOptions, userOptions);
+      const normalizedOptions = { ...defaultOptions, ...userOptions };
 
       // remove plugin specific options
-      for (let key of ["sourcemap", "numWorkers"]) {
+      for (let key of ["numWorkers"]) {
         if (normalizedOptions.hasOwnProperty(key)) {
           delete normalizedOptions[key];
         }
