@@ -28,7 +28,9 @@ function terser(userOptions = {}) {
       this.numOfBundles++;
 
       const defaultOptions = {
-        sourceMap: outputOptions.sourcemap,
+        sourceMap:
+          outputOptions.sourcemap === true ||
+          typeof outputOptions.sourcemap === "string",
       };
       if (outputOptions.format === "es" || outputOptions.format === "esm") {
         defaultOptions.module = true;

@@ -128,6 +128,39 @@ test("minify with sourcemaps", async () => {
   `);
 });
 
+test('work with sourcemap: "inline"', async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/sourcemap.js",
+    plugins: [terser()],
+  });
+  const result = await bundle.generate({ format: "cjs", sourcemap: "inline" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.map).toMatchInlineSnapshot(`
+    SourceMap {
+      "file": "sourcemap.js",
+      "mappings": "aAEAA,QAAQC,ICFO",
+      "names": Array [
+        "console",
+        "log",
+      ],
+      "sources": Array [
+        "test/fixtures/sourcemap.js",
+        "test/fixtures/export-number.js",
+      ],
+      "sourcesContent": Array [
+        "import result from './export-number.js';
+
+    console.log(result);
+    ",
+        "export default 5;
+    ",
+      ],
+      "version": 3,
+    }
+  `);
+});
+
 test("does not allow to pass sourcemap option", async () => {
   try {
     const bundle = await rollup({
