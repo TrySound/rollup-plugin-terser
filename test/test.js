@@ -4,7 +4,7 @@ const { terser } = require("../");
 test("minify", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser()]
+    plugins: [terser()],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -18,11 +18,11 @@ test("minify", async () => {
 test("minify via terser options", async () => {
   const bundle = await rollup({
     input: "test/fixtures/empty.js",
-    plugins: [terser({ output: { comments: "all" } })]
+    plugins: [terser({ output: { comments: "all" } })],
   });
   const result = await bundle.generate({
     banner: "/* package name */",
-    format: "cjs"
+    format: "cjs",
   });
   expect(result.output).toHaveLength(1);
   const [output] = result.output;
@@ -33,12 +33,12 @@ test("minify via terser options", async () => {
 test("minify multiple outputs", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser()]
+    plugins: [terser()],
   });
 
   const [bundle1, bundle2] = await Promise.all([
     bundle.generate({ format: "cjs" }),
-    bundle.generate({ format: "es" })
+    bundle.generate({ format: "es" }),
   ]);
   const [output1] = bundle1.output;
   const [output2] = bundle2.output;
@@ -52,7 +52,7 @@ test("minify multiple outputs", async () => {
 test("minify esm module", async () => {
   const bundle = await rollup({
     input: "test/fixtures/plain-file.js",
-    plugins: [terser()]
+    plugins: [terser()],
   });
   const result = await bundle.generate({ format: "esm" });
   expect(result.output).toHaveLength(1);
@@ -63,7 +63,7 @@ test("minify esm module", async () => {
 test("minify esm module with disabled module option", async () => {
   const bundle = await rollup({
     input: "test/fixtures/plain-file.js",
-    plugins: [terser({ module: false })]
+    plugins: [terser({ module: false })],
   });
   const result = await bundle.generate({ format: "esm" });
   expect(result.output).toHaveLength(1);
@@ -74,7 +74,7 @@ test("minify esm module with disabled module option", async () => {
 test("minify cjs module", async () => {
   const bundle = await rollup({
     input: "test/fixtures/plain-file.js",
-    plugins: [terser()]
+    plugins: [terser()],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -85,7 +85,7 @@ test("minify cjs module", async () => {
 test("minify cjs module with disabled toplevel option", async () => {
   const bundle = await rollup({
     input: "test/fixtures/plain-file.js",
-    plugins: [terser({ toplevel: false })]
+    plugins: [terser({ toplevel: false })],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -98,7 +98,7 @@ test("minify cjs module with disabled toplevel option", async () => {
 test("minify with sourcemaps", async () => {
   const bundle = await rollup({
     input: "test/fixtures/sourcemap.js",
-    plugins: [terser()]
+    plugins: [terser()],
   });
   const result = await bundle.generate({ format: "cjs", sourcemap: true });
   expect(result.output).toHaveLength(1);
@@ -109,7 +109,7 @@ test("minify with sourcemaps", async () => {
 test("allow to disable source maps", async () => {
   const bundle = await rollup({
     input: "test/fixtures/sourcemap.js",
-    plugins: [terser({ sourcemap: false })]
+    plugins: [terser({ sourcemap: false })],
   });
   await bundle.generate({ format: "cjs" });
 });
@@ -118,7 +118,7 @@ test("does not allow to pass sourceMap", async () => {
   try {
     const bundle = await rollup({
       input: "test/fixtures/sourcemap.js",
-      plugins: [terser({ sourceMap: false })]
+      plugins: [terser({ sourceMap: false })],
     });
     expect(true).toBeFalsy();
   } catch (error) {
@@ -132,10 +132,10 @@ test("throw error on terser fail", async () => {
       input: "test/fixtures/failed.js",
       plugins: [
         {
-          renderChunk: () => ({ code: "var = 1" })
+          renderChunk: () => ({ code: "var = 1" }),
         },
-        terser()
-      ]
+        terser(),
+      ],
     });
     await bundle.generate({ format: "esm" });
     expect(true).toBeFalsy();
@@ -150,14 +150,14 @@ test("throw error on terser fail with multiple outputs", async () => {
       input: "test/fixtures/failed.js",
       plugins: [
         {
-          renderChunk: () => ({ code: "var = 1" })
+          renderChunk: () => ({ code: "var = 1" }),
         },
-        terser()
-      ]
+        terser(),
+      ],
     });
     await Promise.all([
       bundle.generate({ format: "cjs" }),
-      bundle.generate({ format: "esm" })
+      bundle.generate({ format: "esm" }),
     ]);
     expect(true).toBeFalsy();
   } catch (error) {
@@ -168,11 +168,11 @@ test("throw error on terser fail with multiple outputs", async () => {
 test("works with code splitting", async () => {
   const bundle = await rollup({
     input: ["test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js"],
-    plugins: [terser()]
+    plugins: [terser()],
   });
   const { output } = await bundle.generate({ format: "esm" });
   const newOutput = {};
-  output.forEach(out => {
+  output.forEach((out) => {
     // TODO rewrite with object rest after node 6 dropping
     const value = Object.assign({}, out);
     delete value.modules;
@@ -185,7 +185,7 @@ test("works with code splitting", async () => {
 test("allow to pass not string values to worker", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser({ mangle: { properties: { regex: /^_/ } } })]
+    plugins: [terser({ mangle: { properties: { regex: /^_/ } } })],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -202,16 +202,16 @@ test("allow classic function definitions passing to worker", async () => {
       terser({
         mangle: { properties: { regex: /^_/ } },
         output: {
-          comments: function(node, comment) {
+          comments: function (node, comment) {
             if (comment.type === "comment2") {
               // multiline comment
               return /@preserve|@license|@cc_on|^!/i.test(comment.value);
             }
             return false;
-          }
-        }
-      })
-    ]
+          },
+        },
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -234,10 +234,10 @@ test("allow method shorthand definitions passing to worker", async () => {
               return /@preserve|@license|@cc_on|^!/i.test(comment.value);
             }
             return false;
-          }
-        }
-      })
-    ]
+          },
+        },
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -260,10 +260,10 @@ test("allow arrow function definitions passing to worker", async () => {
               return /@preserve|@license|@cc_on|^!/i.test(comment.value);
             }
             return false;
-          }
-        }
-      })
-    ]
+          },
+        },
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output).toHaveLength(1);
@@ -276,7 +276,7 @@ test("allow arrow function definitions passing to worker", async () => {
 test("allow to pass not string values to worker", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser({ mangle: { properties: { regex: /^_/ } } })]
+    plugins: [terser({ mangle: { properties: { regex: /^_/ } } })],
   });
   const result = await bundle.generate({ format: "cjs" });
   expect(result.output[0].code).toEqual(
@@ -287,7 +287,7 @@ test("allow to pass not string values to worker", async () => {
 test("include chunk file by string name", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser({ include: "some.js" })]
+    plugins: [terser({ include: "some.js" })],
   });
 
   const result = await bundle.generate({ format: "es", file: "some.js" });
@@ -299,11 +299,11 @@ test("include chunk file by string name", async () => {
 test("exclude chunk file pattern name by minimatch pattern", async () => {
   const bundle = await rollup({
     input: "test/fixtures/unminified.js",
-    plugins: [terser({ exclude: "*-cjs.js" })]
+    plugins: [terser({ exclude: "*-cjs.js" })],
   });
   const result = await bundle.generate({
     format: "cjs",
-    entryFileNames: "[name]-[format].js"
+    entryFileNames: "[name]-[format].js",
   });
   const { code, map } = result.output[0];
 
@@ -316,7 +316,7 @@ test("exclude chunk file pattern name by minimatch pattern", async () => {
 test("include only one chunk file by regex", async () => {
   const bundle = await rollup({
     input: ["test/fixtures/chunk-1.js", "test/fixtures/chunk-2.js"],
-    plugins: [terser({ include: /.+-1\.\w+/ })]
+    plugins: [terser({ include: /.+-1\.\w+/ })],
   });
   const result = await bundle.generate({ format: "es" });
   const { 0: chunk1, 1: chunk2 } = result.output;
@@ -331,9 +331,9 @@ test("terser accepts the nameCache option", async () => {
   const nameCache = {
     props: {
       props: {
-        $_priv: "custom"
-      }
-    }
+        $_priv: "custom",
+      },
+    },
   };
   const bundle = await rollup({
     input: "test/fixtures/properties.js",
@@ -341,12 +341,12 @@ test("terser accepts the nameCache option", async () => {
       terser({
         mangle: {
           properties: {
-            regex: /^_/
-          }
+            regex: /^_/,
+          },
         },
-        nameCache
-      })
-    ]
+        nameCache,
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "es" });
   expect(result.output[0].code.trim()).toEqual(
@@ -358,9 +358,9 @@ test("terser updates the nameCache object", async () => {
   const nameCache = {
     props: {
       props: {
-        $_priv: "f"
-      }
-    }
+        $_priv: "f",
+      },
+    },
   };
   const props = nameCache.props;
   const bundle = await rollup({
@@ -369,12 +369,12 @@ test("terser updates the nameCache object", async () => {
       terser({
         mangle: {
           properties: {
-            regex: /./
-          }
+            regex: /./,
+          },
         },
-        nameCache
-      })
-    ]
+        nameCache,
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "es" });
   expect(result.output[0].code.trim()).toEqual(`console.log({o:1,f:2});`);
@@ -383,9 +383,9 @@ test("terser updates the nameCache object", async () => {
     props: {
       props: {
         $_priv: "f",
-        $foo: "o"
-      }
-    }
+        $foo: "o",
+      },
+    },
   });
 });
 
@@ -397,12 +397,12 @@ test("omits populates an empty nameCache object", async () => {
       terser({
         mangle: {
           properties: {
-            regex: /./
-          }
+            regex: /./,
+          },
         },
-        nameCache
-      })
-    ]
+        nameCache,
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "es" });
   expect(result.output[0].code.trim()).toEqual(
@@ -412,9 +412,9 @@ test("omits populates an empty nameCache object", async () => {
     props: {
       props: {
         $_priv: "i",
-        $foo: "o"
-      }
-    }
+        $foo: "o",
+      },
+    },
   });
 });
 
@@ -423,8 +423,8 @@ test("omits populates an empty nameCache object", async () => {
 test("terser preserve vars in nameCache when provided", async () => {
   const nameCache = {
     vars: {
-      props: {}
-    }
+      props: {},
+    },
   };
   const bundle = await rollup({
     input: "test/fixtures/properties-and-locals.js",
@@ -432,12 +432,12 @@ test("terser preserve vars in nameCache when provided", async () => {
       terser({
         mangle: {
           properties: {
-            regex: /./
-          }
+            regex: /./,
+          },
         },
-        nameCache
-      })
-    ]
+        nameCache,
+      }),
+    ],
   });
   const result = await bundle.generate({ format: "es" });
   expect(result.output[0].code.trim()).toEqual(
@@ -447,11 +447,11 @@ test("terser preserve vars in nameCache when provided", async () => {
     props: {
       props: {
         $_priv: "i",
-        $foo: "o"
-      }
+        $foo: "o",
+      },
     },
     vars: {
-      props: {}
-    }
+      props: {},
+    },
   });
 });

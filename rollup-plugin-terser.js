@@ -9,7 +9,7 @@ function terser(userOptions = {}) {
   }
 
   const filter = createFilter(userOptions.include, userOptions.exclude, {
-    resolve: false
+    resolve: false,
   });
 
   return {
@@ -22,7 +22,7 @@ function terser(userOptions = {}) {
 
       if (!this.worker) {
         this.worker = new Worker(require.resolve("./transform.js"), {
-          numWorkers: userOptions.numWorkers
+          numWorkers: userOptions.numWorkers,
         });
         this.numOfBundles = 0;
       }
@@ -30,7 +30,7 @@ function terser(userOptions = {}) {
       this.numOfBundles++;
 
       const defaultOptions = {
-        sourceMap: userOptions.sourcemap !== false
+        sourceMap: userOptions.sourcemap !== false,
       };
       if (outputOptions.format === "es" || outputOptions.format === "esm") {
         defaultOptions.module = true;
@@ -53,7 +53,7 @@ function terser(userOptions = {}) {
 
       const result = this.worker
         .transform(code, serializedOptions)
-        .catch(error => {
+        .catch((error) => {
           const { message, line, col: column } = error;
           console.error(
             codeFrameColumns(code, { start: { line, column } }, { message })
@@ -72,7 +72,7 @@ function terser(userOptions = {}) {
 
       result.then(handler, handler);
 
-      return result.then(result => {
+      return result.then((result) => {
         if (result.nameCache) {
           let { vars, props } = userOptions.nameCache;
 
@@ -102,7 +102,7 @@ function terser(userOptions = {}) {
 
         return result.result;
       });
-    }
+    },
   };
 }
 
