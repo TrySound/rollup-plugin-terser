@@ -10,7 +10,7 @@ function terser(userOptions = {}) {
   return {
     name: "terser",
 
-    renderChunk(code, chunk, outputOptions) {
+    async renderChunk(code, chunk, outputOptions) {
       if (!this.worker) {
         this.worker = new Worker(require.resolve("./transform.js"), {
           numWorkers: userOptions.numWorkers,
@@ -42,28 +42,9 @@ function terser(userOptions = {}) {
 
       const serializedOptions = serialize(normalizedOptions);
 
-      const result = this.worker
-        .transform(code, serializedOptions)
-        .catch((error) => {
-          const { message, line, col: column } = error;
-          console.error(
-            codeFrameColumns(code, { start: { line, column } }, { message })
-          );
-          throw error;
-        });
+      try {
+        const result = await this.worker.transform(code, serializedOptions);
 
-      const handler = () => {
-        this.numOfBundles--;
-
-        if (this.numOfBundles === 0) {
-          this.worker.end();
-          this.worker = 0;
-        }
-      };
-
-      result.then(handler, handler);
-
-      return result.then((result) => {
         if (result.nameCache) {
           let { vars, props } = userOptions.nameCache;
 
@@ -92,7 +73,20 @@ function terser(userOptions = {}) {
         }
 
         return result.result;
-      });
+      } catch (error) {
+        const { message, line, col: column } = error;
+        console.error(
+          codeFrameColumns(code, { start: { line, column } }, { message })
+        );
+        throw error;
+      } finally {
+        this.numOfBundles--;
+
+        if (this.numOfBundles === 0) {
+          this.worker.end();
+          this.worker = 0;
+        }
+      }
     },
   };
 }
