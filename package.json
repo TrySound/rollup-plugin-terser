@@ -2,10 +2,16 @@
   "name": "rollup-plugin-terser",
   "version": "6.0.1",
   "description": "Rollup plugin to minify generated es bundle",
+  "type": "commonjs",
   "main": "rollup-plugin-terser.js",
   "types": "rollup-plugin-terser.d.ts",
+  "exports": {
+    "require": "./rollup-plugin-terser.js",
+    "import": "./rollup-plugin-terser.mjs"
+  },
   "files": [
     "rollup-plugin-terser.js",
+    "rollup-plugin-terser.mjs",
     "rollup-plugin-terser.d.ts",
     "transform.js"
   ],
