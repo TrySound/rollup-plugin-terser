@@ -34,16 +34,16 @@
   "dependencies": {
     "@babel/code-frame": "^7.10.4",
     "jest-worker": "^26.2.1",
-    "serialize-javascript": "^3.0.0",
+    "serialize-javascript": "^4.0.0",
     "terser": "^5.0.0"
   },
   "peerDependencies": {
     "rollup": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.0",
+    "@babel/core": "^7.11.1",
     "jest": "^26.2.2",
     "prettier": "^2.0.5",
-    "rollup": "^2.23.0"
+    "rollup": "^2.23.1"
   }
 }
