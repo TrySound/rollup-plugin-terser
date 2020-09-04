@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-terser",
-  "version": "7.0.0",
+  "version": "7.0.2",
   "description": "Rollup plugin to minify generated es bundle",
   "type": "commonjs",
   "main": "rollup-plugin-terser.js",
@@ -35,7 +35,7 @@
     "@babel/code-frame": "^7.10.4",
     "jest-worker": "^26.2.1",
     "serialize-javascript": "^4.0.0",
-    "terser": "^5.0.0"
+    "terser": "^5.3.0"
   },
   "peerDependencies": {
     "rollup": "^2.0.0"
