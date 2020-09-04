@@ -34,7 +34,7 @@
     "@babel/code-frame": "^7.5.5",
     "jest-worker": "^24.9.0",
     "rollup-pluginutils": "^2.8.2",
-    "serialize-javascript": "^2.1.2",
+    "serialize-javascript": "^4.0.0",
     "terser": "^4.6.2"
   },
   "peerDependencies": {
