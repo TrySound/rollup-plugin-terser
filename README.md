@@ -76,7 +76,7 @@ If you'd like to preserve comments (for licensing for example), then you can spe
 
 ```js
 terser({
-  output: {
+  format: {
     comments: function (node, comment) {
       var text = comment.value;
       var type = comment.type;
@@ -93,7 +93,7 @@ Alternatively, you can also choose to keep all comments (e.g. if a licensing hea
 
 ```js
 terser({
-  output: {
+  format: {
     comments: "all",
   },
 });
