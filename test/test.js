@@ -15,6 +15,40 @@ test("minify", async () => {
   expect(output.map).toBeFalsy();
 });
 
+test("minify with `numWorkers` option", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/unminified.js",
+    plugins: [terser({
+      numWorkers: 2
+    })],
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
+  expect(output.map).toBeFalsy();
+});
+
+test("minify with empty `nameCache.vars`", async () => {
+  const bundle = await rollup({
+    input: "test/fixtures/unminified.js",
+    plugins: [terser({
+      nameCache: {
+        vars: {}
+      }
+    })],
+  });
+  const result = await bundle.generate({ format: "cjs" });
+  expect(result.output).toHaveLength(1);
+  const [output] = result.output;
+  expect(output.code).toEqual(
+    '"use strict";window.a=5,window.a<3&&console.log(4);\n'
+  );
+  expect(output.map).toBeFalsy();
+});
+
 test("minify via terser options", async () => {
   const bundle = await rollup({
     input: "test/fixtures/empty.js",
