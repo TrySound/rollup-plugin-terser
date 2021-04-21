@@ -31,6 +31,7 @@
   ],
   "author": "Bogdan Chadkin <trysound@yandex.ru>",
   "license": "MIT",
+  "homepage": "https://github.com/TrySound/rollup-plugin-terser",
   "dependencies": {
     "@babel/code-frame": "^7.10.4",
     "jest-worker": "^26.2.1",
