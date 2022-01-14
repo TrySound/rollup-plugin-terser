@@ -21,6 +21,7 @@ function terser(userOptions = {}) {
       if (!this.worker) {
         this.worker = new Worker(require.resolve("./transform.js"), {
           numWorkers: userOptions.numWorkers,
+          enableWorkerThreads: true,
         });
         this.numOfBundles = 0;
       }
