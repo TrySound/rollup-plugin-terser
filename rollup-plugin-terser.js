@@ -1,5 +1,5 @@
 const { codeFrameColumns } = require("@babel/code-frame");
-const Worker = require("jest-worker").default;
+const { Worker } = require("jest-worker");
 const serialize = require("serialize-javascript");
 
 function terser(userOptions = {}) {
