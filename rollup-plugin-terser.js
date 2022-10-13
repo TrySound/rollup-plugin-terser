@@ -1,5 +1,9 @@
-const { codeFrameColumns } = require("@babel/code-frame");
-const Worker = require("jest-worker").default;
+const {
+  codeFrameColumns
+} = require("@babel/code-frame");
+const {
+  Worker
+} = require("jest-worker");
 const serialize = require("serialize-javascript");
 
 function terser(userOptions = {}) {
@@ -28,8 +32,7 @@ function terser(userOptions = {}) {
       this.numOfBundles++;
 
       const defaultOptions = {
-        sourceMap:
-          outputOptions.sourcemap === true ||
+        sourceMap: outputOptions.sourcemap === true ||
           typeof outputOptions.sourcemap === "string",
       };
       if (outputOptions.format === "es" || outputOptions.format === "esm") {
@@ -39,7 +42,10 @@ function terser(userOptions = {}) {
         defaultOptions.toplevel = true;
       }
 
-      const normalizedOptions = { ...defaultOptions, ...userOptions };
+      const normalizedOptions = {
+        ...defaultOptions,
+        ...userOptions
+      };
 
       // remove plugin specific options
       for (let key of ["numWorkers"]) {
@@ -54,7 +60,10 @@ function terser(userOptions = {}) {
         const result = await this.worker.transform(code, serializedOptions);
 
         if (result.nameCache) {
-          let { vars, props } = userOptions.nameCache;
+          let {
+            vars,
+            props
+          } = userOptions.nameCache;
 
           // only assign nameCache.vars if it was provided, and if terser produced values:
           if (vars) {
@@ -82,9 +91,20 @@ function terser(userOptions = {}) {
 
         return result.result;
       } catch (error) {
-        const { message, line, col: column } = error;
+        const {
+          message,
+          line,
+          col: column
+        } = error;
         console.error(
-          codeFrameColumns(code, { start: { line, column } }, { message })
+          codeFrameColumns(code, {
+            start: {
+              line,
+              column
+            }
+          }, {
+            message
+          })
         );
         throw error;
       } finally {
