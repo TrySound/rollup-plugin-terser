@@ -1,4 +1,4 @@
-const { rollup } = require("rollup-2.0.0");
+const { rollup } = require("rollup");
 const { terser } = require("../");
 
 test("minify", async () => {
@@ -101,7 +101,7 @@ test("minify with sourcemaps", async () => {
     plugins: [terser()],
   });
   const result = await bundle.generate({ format: "cjs", sourcemap: true });
-  expect(result.output).toHaveLength(1);
+  expect(result.output).toHaveLength(2);
   const [output] = result.output;
   expect(output.map).toMatchInlineSnapshot(`
     SourceMap {
@@ -236,6 +236,7 @@ test("works with code splitting", async () => {
     const value = Object.assign({}, out);
     delete value.modules;
     delete value.facadeModuleId;
+    delete value.moduleIds;
     newOutput[out.fileName] = value;
   });
   expect(newOutput).toMatchSnapshot();
