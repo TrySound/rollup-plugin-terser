@@ -38,12 +38,13 @@
     "terser": "^5.0.0"
   },
   "peerDependencies": {
-    "rollup": "^2.0.0"
+    "rollup": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
-    "jest": "^26.2.2",
+    "jest": "^29.0.0",
     "prettier": "^2.0.5",
-    "rollup": "^2.23.1"
+    "rollup": "^3.0.0",
+    "rollup-2.0.0": "npm:rollup@^2.23.1"
   }
 }

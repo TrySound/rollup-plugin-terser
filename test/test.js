@@ -1,4 +1,4 @@
-const { rollup } = require("rollup");
+const { rollup } = require("rollup-2.0.0");
 const { terser } = require("../");
 
 test("minify", async () => {
@@ -107,15 +107,15 @@ test("minify with sourcemaps", async () => {
     SourceMap {
       "file": "sourcemap.js",
       "mappings": "aAEAA,QAAQC,ICFO",
-      "names": Array [
+      "names": [
         "console",
         "log",
       ],
-      "sources": Array [
+      "sources": [
         "test/fixtures/sourcemap.js",
         "test/fixtures/export-number.js",
       ],
-      "sourcesContent": Array [
+      "sourcesContent": [
         "import result from './export-number.js';
 
     console.log(result);
@@ -140,15 +140,15 @@ test('work with sourcemap: "inline"', async () => {
     SourceMap {
       "file": "sourcemap.js",
       "mappings": "aAEAA,QAAQC,ICFO",
-      "names": Array [
+      "names": [
         "console",
         "log",
       ],
-      "sources": Array [
+      "sources": [
         "test/fixtures/sourcemap.js",
         "test/fixtures/export-number.js",
       ],
-      "sourcesContent": Array [
+      "sourcesContent": [
         "import result from './export-number.js';
 
     console.log(result);
